@@ -77,12 +77,11 @@ public class DroolsTest {
 				found = true;
 			}
 		}
-		if (!found) System.out.println("WOMP");
 		Assert.assertTrue( "non-Kansas business validated", found );
 	}
 
 
-
+	@Test
 	public void shouldCreateValidationErrorsForAnyFieldThatAreEmptyOrNull(){
 		// scenario: all fields must have values. 
 		// given a business 
@@ -96,9 +95,54 @@ public class DroolsTest {
 		RuleResponse response = service.runRules(facts, "VerifySupplier", RuleResponse.class);
 		
 		// then the business should return a validation error
+		Assert.assertNotNull(response);
+		Assert.assertEquals("error", response.getResponseCode());
 		
 		// and a message should say the zipcode is empty
 		// and a message should say the address is null
+		Assert.assertFalse(response.getReasons().isEmpty());
+		boolean found = false;
+		for (Reason reason : response.getReasons()){
+			if ( reason.getReasonMessage().equals( "name field is empty") ){
+				found = true;
+				Assert.assertTrue( "name field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "addressline1 field is empty") ){
+				found = true;
+				Assert.assertTrue( "addressline1 field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "addressline2 field is empty") ){
+				found = true;
+				Assert.assertTrue( "addressline2 field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "phoneNumber field is empty") ){
+				found = true;
+				Assert.assertTrue( "phone field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "city field is empty") ){
+				found = true;
+				Assert.assertTrue( "city field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "stateCode field is empty") ){
+				found = true;
+				Assert.assertTrue( "stateCode field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "zipCode field is empty") ){
+				found = true;
+				Assert.assertTrue( "zipCode field is empty", found );
+				found = false;
+			}
+			if ( reason.getReasonMessage().equals( "federalTaxId field is empty") ){
+				found = true;
+				Assert.assertTrue( "federalTaxId field is empty", found );
+			}
+		}
 	}
 	
 	public void shouldEnrichTheTaxIdWithZipCode(){
