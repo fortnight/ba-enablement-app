@@ -27,13 +27,25 @@ public class DroolsTest {
 		Assert.assertEquals("test", response.getBusiness().getName());
 	}
 	
-	
+	@Test
 	public void shouldFilterOutAllRequestsFromKansas(){
 		// scenario: business from Kansas are handled by another system - filter them out
 		// given a business from Kansas
+		Collection<Object> facts = new ArrayList<Object>();
+		Business business = new Business();
+		business.setStateCode("KS");
+		facts.add(business);
+		Reason reason = new Reason();
+		Collection<Reason> reasons = new ArrayList<Reason>();
+		reasons.add(reason);
+		
 		// when I apply the filtering rules
+		RuleResponse response = service.runRules(facts,  "VerifySupplier",  RuleResponse.class);
+		response.setReasons(reasons);
+		
 		// then the business should be filtered
 		// and the reason message should be "business filtered from Kansas"
+		Assert.assertEquals("business filtered from Kansas", ((Reason) response.getReasons().toArray()[0]).getReasonMessage());
 	}
 	
 	
