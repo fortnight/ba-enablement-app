@@ -152,13 +152,24 @@ public class DroolsTest {
 		}
 	}
 	
+	@Test
 	public void shouldEnrichTheTaxIdWithZipCode(){
 		// scenario: we need to enrich the taxId with the zipcode for system XYZ
-		// given a business 
+		// given a business
 		// and the business' zipcode is 10002
 		// and the business' taxId is 98765
+		Collection<Object> facts = new ArrayList<Object>();
+		Business business = new Business();
+		business.setZipCode("10002");
+		business.setFederalTaxId("98765");
+		facts.add(business);
+		
 		// when I apply the enrichment rules
+		RuleResponse response = service.runRules(facts, "VerifySupplier", RuleResponse.class);
+		
+		
 		// then the business' taxId should be enriched to 98765-10002
+		Assert.assertEquals("98765-10002", response.getBusiness().getFederalTaxId());
 	}
 	
 }
