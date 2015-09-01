@@ -33,7 +33,14 @@ public class DroolsTest {
 		// given a business from Kansas
 		Collection<Object> facts = new ArrayList<Object>();
 		Business business = new Business();
+		business.setName("FedEx");
+		business.setAddressLine1("400 FedEx Street");
+		business.setAddressLine2("Penthouse Suite");
+		business.setPhoneNumber("1800cars4kids");
+		business.setCity("Kansas City");
 		business.setStateCode("KS");
+		business.setZipCode("90210");
+		business.setFederalTaxId("Something");
 		facts.add(business);
 		
 		// when I apply the filtering rules
