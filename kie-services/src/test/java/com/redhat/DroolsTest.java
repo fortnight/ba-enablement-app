@@ -68,11 +68,16 @@ public class DroolsTest {
 		
 		// then the business should be not be filtered
 		Assert.assertNotNull(response);
-		Assert.assertNull(response.getResponseCode());
+		Assert.assertNotEquals("filtered", response.getResponseCode());
 		
 		// and the validation rules should be applied to the business
-		Assert.assertNotNull(response.getReasons());
-		Assert.assertTrue(response.getReasons().isEmpty());
+		boolean found = false;
+		for (Reason reason : response.getReasons()){
+			if ( reason.getReasonMessage().equals( "non-Kansas business validated") ){
+				found = true;
+			}
+		}
+		Assert.assertTrue( "non-Kansas business validated", found );
 	}
 
 
