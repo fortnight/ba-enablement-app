@@ -35,35 +35,62 @@ public class DroolsTest {
 		Business business = new Business();
 		business.setStateCode("KS");
 		facts.add(business);
-		Reason reason = new Reason();
-		Collection<Reason> reasons = new ArrayList<Reason>();
-		reasons.add(reason);
 		
 		// when I apply the filtering rules
-		RuleResponse response = service.runRules(facts,  "VerifySupplier",  RuleResponse.class);
-		response.setReasons(reasons);
+		RuleResponse response = service.runRules(facts, "VerifySupplier", RuleResponse.class);
 		
 		// then the business should be filtered
+		Assert.assertNotNull(response);
+		Assert.assertNotNull(response.getResponseCode());
+		Assert.assertEquals("filtered", response.getResponseCode());
+		
 		// and the reason message should be "business filtered from Kansas"
-		Assert.assertEquals("business filtered from Kansas", ((Reason) response.getReasons().toArray()[0]).getReasonMessage());
+		boolean found = false;
+		for (Reason reason : response.getReasons()){
+			if ( reason.getReasonMessage().equals( "business filtered from Kansas not found") ){
+				found = true;
+			}
+		}
+		Assert.assertTrue( "business filtered from Kansas not found", found );
 	}
-	
-	
+		
+	@Test
 	public void shouldProcessAllBusinessesNotFromKansas(){
 		// scenario: we are responsible for all businesses not from Kansas
 		// given a business from New York
+		Collection<Object> facts = new ArrayList<Object>();
+		Business business = new Business();
+		business.setStateCode("NY");
+		facts.add(business);
+		
 		// when I apply the filtering rules
+		RuleResponse response = service.runRules(facts, "VerifySupplier", RuleResponse.class);
+		
 		// then the business should be not be filtered
+		Assert.assertNotNull(response);
+		Assert.assertNull(response.getResponseCode());
+		
 		// and the validation rules should be applied to the business
+		Assert.assertNotNull(response.getReasons());
+		Assert.assertTrue(response.getReasons().isEmpty());
 	}
-	
+
+
+
 	public void shouldCreateValidationErrorsForAnyFieldThatAreEmptyOrNull(){
 		// scenario: all fields must have values. 
 		// given a business 
 		// and the business' zipcode is empty
 		// and the business' address line 1 is null
+		Collection<Object> facts = new ArrayList<Object>();
+		Business business = new Business();
+		facts.add(business);
+		
 		// when I apply the validation rules
-		// then the business should be return a validation error
+		RuleResponse response = service.runRules(facts, "VerifySupplier", RuleResponse.class);
+		
+		// then the business should return a validation error
+		
 		// and a message should say the zipcode is empty
 		// and a message should say the address is null
 	}
