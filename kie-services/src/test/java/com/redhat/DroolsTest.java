@@ -77,6 +77,7 @@ public class DroolsTest {
 				found = true;
 			}
 		}
+		if (!found) System.out.println("WOMP");
 		Assert.assertTrue( "non-Kansas business validated", found );
 	}
 
