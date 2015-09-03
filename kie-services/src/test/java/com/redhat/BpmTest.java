@@ -45,6 +45,7 @@ public class BpmTest extends AbstractJUnit4SpringContextTests {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("StringVar", new String("test"));
+		map.put("IntVar", new Integer(9000));
 
 		processService.startProcess(DEPLOYMENT_UNIT.getIdentifier(), PROCESS_ID, map);
 	}
