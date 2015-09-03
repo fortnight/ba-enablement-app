@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class DroolsTest {
 
-	private StatelessDecisionService service = BrmsHelper.newStatelessDecisionServiceBuilder().auditLogName("audit").build();
+	private StatelessDecisionService service = BrmsHelper.newStatelessDecisionServiceBuilder().auditLogName("audit2").build();
 
 	@Test
 	public void helloWorldTest() {
